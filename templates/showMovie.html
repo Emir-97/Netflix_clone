@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+   Movie
+{% endblock title %}
+
+{% block others %}
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        .player::-webkit-progress-bar{
+            color: red;
+        }
+    </style>
+    <link href="//vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet">
+    <script src="//vjs.zencdn.net/7.10.2/video.min.js"></script>
+{% endblock others %}
+    
+{% block content %}
+
+    {% include 'partials/navbar.html' %}
+    <main class='bg-primary_black h-full w-full '>
+
+        {{ movie|json_script:"movie_data" }}
+        <video  src="" controls class="w-full h-screen player"></video>
+    </main>
+    <script type="text/javascript">
+        const videoEl=document.querySelector('video')
+        const movie_data = JSON.parse(document.getElementById('movie_data').textContent);
+        
+       
+        const url =new URL(location.href)
+        
+        const video_param = parseInt(url.searchParams.get("epi")) ? parseInt(url.searchParams.get("epi")) : 0
+
+        videoEl.setAttribute('src',`http:/localhost:8000/media/${movie_data[video_param].file}`)
+    </script>
+{% endblock content %}
